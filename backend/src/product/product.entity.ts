@@ -1,7 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm";
-import { Supplier } from '../supplier/supplier.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-@Entity()
+@Entity('products')
 export class Product{
     @PrimaryGeneratedColumn()
     id: number;
@@ -12,13 +11,9 @@ export class Product{
     @Column()
     description: string;
 
-    @Column()
+    @Column('decimal')
     price: number;
 
     @Column()
     barcode: string;
-
-    @ManyToMany(() => Supplier, supplier => supplier.products)
-    @JoinTable()
-    suppliers: Supplier[];
 }

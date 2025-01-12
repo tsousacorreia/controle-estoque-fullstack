@@ -15,18 +15,18 @@ export class ProductService {
     }
 
     findAll(): Promise<Product[]> {
-        return this.productRepository.find({ relations: ['suppliers'] });
+        return this.productRepository.find();
     }
 
     findOne(id: number): Promise<Product> {
-        return this.productRepository.findOne({ where: { id }, relations: ['suppliers'] });
+        return this.productRepository.findOne({ where: {id} });
     }
 
-    async update(id: number, product: Product): Promise<void> {
-        await this.productRepository.update(id, product);
+    update(id: number, product: Product): Promise<void> {
+        return this.productRepository.update(id, product).then(() => {});
     }
 
-    async remove(id: number): Promise<void> {
-        await this.productRepository.delete(id);
+    remove(id: number): Promise<void> {
+        return this.productRepository.delete(id).then(() => {});
     }
 }
