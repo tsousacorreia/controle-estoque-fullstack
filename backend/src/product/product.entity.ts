@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { ProductSupplier } from "../product-supplier/product-supplier.entity";
 
 @Entity('products')
 export class Product{
@@ -16,4 +17,7 @@ export class Product{
 
     @Column()
     barcode: string;
+
+    @OneToMany(() => ProductSupplier, (productSupplier) => productSupplier.product)
+    productSuppliers: ProductSupplier[];
 }

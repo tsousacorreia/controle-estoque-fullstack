@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, HttpCode, HttpStatus, ParseIntPipe } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Product } from './product.entity';
 
@@ -7,27 +7,36 @@ export class ProductController {
     constructor(private readonly productService: ProductService) {}
 
     @Post()
-    create(@Body() product: Product): Promise<Product> {
-        return this.productService.create(product);
+    @HttpCode(HttpStatus.CREATED)
+    async create(@Body() product: Product): Promise<{ message: string; product: Product }> {
+        const newProduct = await this.productService.create(product);
+        return { message: 'Produto criado com sucesso.', product: newProduct };
     }
 
     @Get()
-    findAll(): Promise<Product[]> {
+    async findAll(): Promise<Product[]> {
         return this.productService.findAll();
     }
 
     @Get(':id')
-    findOne(@Param('id') id: number): Promise<Product> {
+    async findOne(@Param('id', ParseIntPipe) id: number): Promise<Product> {
         return this.productService.findOne(id);
     }
 
     @Put(':id')
-    update(@Param('id') id: number, @Body() product: Product): Promise<void> {
-        return this.productService.update(id, product);
+    @HttpCode(HttpStatus.OK)
+    async update(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() product: Product
+    ): Promise<{ message: string }> {
+        await this.productService.update(id, product);
+        return { message: 'Produto atualizado com sucesso.'}
     }
 
     @Delete(':id')
-    remove(@Param('id') id: number): Promise<void> {
-        return this.productService.remove(id);
+    @HttpCode(HttpStatus.OK)
+    async remove(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
+        await this.productService.remove(id);
+        return { message: 'Produto removido com sucesso.'}
     }
 }
