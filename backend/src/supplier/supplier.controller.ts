@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Param, Delete, Put, HttpCode, HttpStatus, 
 import { SupplierService } from './supplier.service';
 import { Supplier } from './supplier.entity';
 
-@Controller('suppliers')
+@Controller('api/suppliers')
 export class SupplierController {
     constructor(private readonly supplierService: SupplierService) {}
 
